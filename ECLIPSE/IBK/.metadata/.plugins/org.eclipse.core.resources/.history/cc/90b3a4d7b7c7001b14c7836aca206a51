@@ -1,0 +1,158 @@
+package Wekaa;
+
+import weka.core.Instances;
+import weka.core.converters.ConverterUtils.DataSource;
+import weka.classifiers.lazy.IBk;
+import java.util.Scanner;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+
+
+public class Wekaa {
+
+	public static void main(String[] args) throws Exception {
+
+		// load training dataset
+		DataSource source = new DataSource("C:\\Users\\ergun\\Desktop\\originalDataSet.arff");
+		Instances trainDataset = source.getDataSet();
+		// set class index to the last attribute
+		trainDataset.setClassIndex(0);
+
+		// create and build the classifier
+		IBk nb = new IBk();
+
+
+			@SuppressWarnings("resource")
+			Scanner scan = new Scanner(System.in);
+			
+			System.out.println("Okul Donem gir : ");
+			int okulDonemi = scan.nextInt();
+			
+			System.out.println("Sinav Yili gir : ");
+			int sinavYili = scan.nextInt();
+			
+			System.out.println("Sinav 1 not Toplamini gir : ");
+			int sinavBir = scan.nextInt();
+			
+			System.out.println("Sinav 2 not Toplamini gir : ");
+			int sinavIki = scan.nextInt();
+			
+			
+			
+
+			System.out.println("txt'ye yazildi :  " +okulDonemi + "," + sinavYili + ","  +"?" + "," + sinavBir + "," + sinavIki );
+			
+			
+			
+			 File anaDoysaKonum = new File("C:\\Users\\ergun\\Desktop\\set.txt"); 
+		        File kopyaDoysaKonum = new File("C:\\Users\\ergun\\Desktop\\setKopya.txt");
+
+		        // Ana dosyanýn belirtilen konumda olmasý yeterlidir.
+		        // User yerine kendi bilgisayarýnýzýn kullanýcý adýný yazýnýz
+		        // Ýlgili dosyayý kopyaDoysaKonum konumuna bu isimle kaydedilecektir
+		      
+		        dosyaKopyala(anaDoysaKonum,kopyaDoysaKonum); // Burada kopyalama iþlemini baþlatýyoruz
+
+		        
+		      
+				String dosyaYolu = "C:\\Users\\ergun\\Desktop\\setKopya.txt";
+				 
+				try
+				{
+				FileOutputStream fos = new FileOutputStream(dosyaYolu);
+				 
+				OutputStreamWriter osw=new OutputStreamWriter(fos,"UTF-8");
+				
+				osw.write("@relation 'Sinav Analizi-weka.filters.unsupervised.attribute.Remove-R4-5,7,9-15'\r\n"
+						+ "\r\n"
+						+ "@attribute 'Okul Donemi' {3,4,5,6,7,8}\r\n"
+						+ "@attribute 'Sinav Yili' {2013,2014,2015}\r\n"
+						+ "@attribute 'Ogrenci Ulkeleri' {ELL,EP,Asian,Black,Hispanic,White,Notswd,SWD}\r\n"
+						+ "@attribute 'Sinav 1' numeric\r\n"
+						+ "@attribute 'Sinav 2' numeric\r\n"
+						+ "\r\n"
+						+ "@data"
+						+ "\r\n");
+				
+				osw.write(okulDonemi + "," + sinavYili + "," + "?" + ","  + sinavBir + "," + sinavIki);
+				osw.close();
+				}
+				catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
+				catch(FileNotFoundException ex)
+				{
+				System.out.println("Hata : " + ex);
+				} 
+				catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				}
+				
+				
+				
+		}
+
+	
+	public static void dosyaKopyala(File anaDoysaKonum,File kopyaDoysaKonum){
+
+        try {
+
+            FileInputStream fis = new FileInputStream(anaDoysaKonum);
+            BufferedInputStream okuyucu = new BufferedInputStream(fis);
+
+            FileOutputStream fos = new FileOutputStream(kopyaDoysaKonum);
+            BufferedOutputStream yazici = new BufferedOutputStream(fos);
+
+            int veri = 0; // Veri Byte olarak geleceði için int yeterlidir.
+
+            while ((veri = okuyucu.read()) != -1){ // -1 olursa bitmiþtir.
+
+                byte girdi = (byte) veri; // byte bazlý okuma
+                
+                //System.out.println("Byte : "+girdi);
+                yazici.write(girdi);
+
+            }
+
+            yazici.flush();  // Herhangi bir aksilik olursa veriyi son anda yollamak için
+            yazici.close();  // Ýþlemimiz bitince dosyayý serbest býrakýyoruz
+            okuyucu.close(); // Ýþlemimiz bitince dosyayý serbest býrakýyoruz
+
+        }catch (Exception e){
+            System.out.println("Hata Kopyalama Baþarýsýz");
+            e.printStackTrace();
+        }
+
+    }
+}
+
+/*//load new dataset
+		DataSource source1 = new DataSource("C:\\Users\\ergun\\Desktop\\testDataSet.arff");
+		Instances testDataset = source1.getDataSet();
+		// set class index to the last attribute
+		testDataset.setClassIndex(2);
+
+		// loop through the new dataset and make predictions
+		System.out.println("================");
+		System.out.println("NB Predicted");
+		for (int i = 0; i < testDataset.numInstances(); i++) {
+
+			Instance newInst = testDataset.instance(i);
+			// call classifyInstance, which return a double value for the class
+			double predNB = nb.classifyInstance(newInst);
+			// use this value to get string value of the predicted class
+			String predString = testDataset.classAttribute().value((int) predNB);
+			System.out.println("Ulke adi: " + predString);
+*/

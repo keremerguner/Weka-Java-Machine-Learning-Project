@@ -1,0 +1,9 @@
+@relation 'Sinav Analizi-weka.filters.unsupervised.attribute.Remove-R4-5,7,9-15'
+
+@attribute 'Okul Donemi' {3,4,5,6,7,8}
+@attribute 'Sinav Yili' {2013,2014,2015}
+@attribute 'Ogrenci Ulkeleri' {ELL,EP,Asian,Black,Hispanic,White,Notswd,SWD}
+@attribute 'Sinav 1' numeric
+@attribute 'Sinav 2' numeric
+
+@data
